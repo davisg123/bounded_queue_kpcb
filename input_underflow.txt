@@ -1,0 +1,14 @@
+size 10
+q 3
+q 5
+q 7
+q 9
+q 11
+d
+d
+d
+d
+d
+d
+d
+d
