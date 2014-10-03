@@ -2,17 +2,30 @@
 #include<stdlib.h>
 #include<string.h>
 
+/*****************
+An implementation of an array-based bounded queue.
+An array (bufferArray) contains pointers in memory to the Entry struct.  This array is initialized to be the maxsize of the queue.
+The array is accessed in a circular fashion to add or remove entries from the queue, meaning that the first entry might not exist in the first bufferArray position
+*****************/
+
 struct Entry {
-	int val;
-	int pos;
+	int val;					// the value of the queue entry
+	int pos;					// the position of the queue entry in the pointer array
 };
 
 
-int MAXSTORAGE;
-struct Entry *first;
-struct Entry *last;
-void **bufferArray;
+int MAXSTORAGE;					// constant (in implementation) representing max size of the queue
+struct Entry *first;			// pointer to the first queue entry
+struct Entry *last;				// pointer to the last queue entry
+void **bufferArray;				// array of pointers to entries
 
+/**
+	find the next array position given a queue entry
+	@parameter item
+	the entry to find the next array position for
+	@return
+	integer representing the next array position
+**/
 int getPositionAfterItem(struct Entry *item){
 	int nextPos = 0;
 	if (last != NULL){
@@ -24,6 +37,11 @@ int getPositionAfterItem(struct Entry *item){
 	return nextPos;
 }
 
+/**
+	recursively print the queue contents
+	@parameter item
+	queue printing starts at this item
+**/
 void printQueue(struct Entry *item){
 	if (item == first){
 		printf("Queue is now ");
@@ -43,6 +61,9 @@ void printQueue(struct Entry *item){
 	}
 }
 
+/**
+	get the next available array position (after the last entry), if the queue is not full
+**/
 int nextAvailableArrayPosition(){
 	int nextPos = getPositionAfterItem(last);
 	if (first != NULL && nextPos == first->pos){
@@ -52,6 +73,13 @@ int nextAvailableArrayPosition(){
 	return nextPos;
 }
 
+/**
+	enqueue an item by finding the next available array position and creating an entry at that position.
+	@param val
+	value for the entry
+	@returns Entry
+	the added entry
+**/
 struct Entry *enqueue(int val){
 	printf("Queueing %d\n", val);
 	int position = nextAvailableArrayPosition();
@@ -74,6 +102,9 @@ struct Entry *enqueue(int val){
 	}
 }
 
+/**
+	dequeue an item by setting the first item to be one after the first item
+**/
 void dequeue(){
 	printf("Dequeuing\n");
 	if (first != NULL){
@@ -90,6 +121,11 @@ void dequeue(){
 	}
 }
 
+/**
+	initialize the buffer array depending on the max queue size
+	@param size
+	size of the queue
+**/
 void createQueueOfSize(int size){
 	printf("Creating queue of size %d\n", size);
 	MAXSTORAGE = size;
@@ -100,6 +136,9 @@ void createQueueOfSize(int size){
 	}
 }
 
+/**
+	parse a file, moving line by line and calling the appropriate functions
+**/
 void parseFile(FILE *file){
 	char line[256];
 	while (fgets(line, sizeof(line), file)){
