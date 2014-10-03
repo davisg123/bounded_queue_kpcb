@@ -150,7 +150,7 @@ void parseFile(FILE *file){
 		else if (strcmp(components,"q") == 0){
 			enqueue(atoi(strtok(NULL, " ")));
 		}
-		else if (strcmp(components,"d\n") == 0){
+		else if (strcmp(components,"d\n") == 0 || strcmp(components,"d") == 0){
 			dequeue();
 		}
 		else{
