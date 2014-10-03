@@ -67,7 +67,6 @@ void printQueue(struct Entry *item){
 int nextAvailableArrayPosition(){
 	int nextPos = getPositionAfterItem(last);
 	if (first != NULL && nextPos == first->pos){
-		printf("Queue size limit exceeded, ignoring entry.\n");
 		return -1;
 	}
 	return nextPos;
@@ -98,27 +97,38 @@ struct Entry *enqueue(int val){
 		return entry;
 	}
 	else{
+		printf("Queue size limit exceeded, ignoring entry.\n");
 		return NULL;
 	}
 }
 
 /**
 	dequeue an item by setting the first item to be one after the first item
+	@return
+	the integer value of the dequeued entry
 **/
-void dequeue(){
-	printf("Dequeuing\n");
+int dequeue(){
+	int dequeuedVal;
+	printf("Dequeuing ");
 	if (first != NULL){
+		dequeuedVal = first->val;
 		if (first != last){
 			first = bufferArray[getPositionAfterItem(first)];
 		}
 		else{
 			first = NULL;
 		}
+		printf("(%d)\n", dequeuedVal);
 		printQueue(first);
 	}
 	else{
+		//having to return an integer is not ideal because there's no concept of a null integer
+		//just return a zero and assume the printf provides enough information
+		dequeuedVal = 0;
+		printf("\n");
 		printf("Queue is empty.  Nothing to dequeue.\n");
 	}
+	return dequeuedVal;
 }
 
 /**
